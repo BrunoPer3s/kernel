@@ -106,22 +106,33 @@ unsigned char read_rtc() {
             if(year < CURRENT_YEAR) year += 100;
       }
 
-      cls();
+      clear_area(65, 0, 10, 0);
       print_time(hour-3, minute, second);
-      putch('\t');
+      putch('  ');
       print_date(day, month, year);
 
       return hour;
 }
 
-void showTime() {
-      while(1) {
-            read_rtc();
-            for(int i = 0; i < 10000; i++) {
-                  for(int j = 0; j < 10000; j++) {
-                        __asm__ __volatile__ ("nop");
-                  }
-            }
-      }
+void init_timer(int frequency) {
+      int divisor = 1193180 / frequency;
+      outportb(0x43, 0x36);
+      outportb(0x40, divisor & 0xFF);
+      outportb(0x40, (divisor >> 8) & 0xFF);
 }
+
+void timer_callback() {
+      read_rtc();
+}
+
+void init_timer_interrupt() {
+      irq_install_handler(0, timer_callback);
+      init_timer(1);
+}
+
+void showTime() {
+      init_timer_interrupt();
+}
+
+
 
