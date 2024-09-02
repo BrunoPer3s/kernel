@@ -109,7 +109,7 @@ unsigned char read_rtc() {
       unsigned int cursor_user_x, cursor_user_y;
       save_cursor_position(&cursor_user_x, &cursor_user_y);
 
-      clear_area(65, 0, 10, 0);
+      clear_area(63, 0, 10, 0);
       print_time(hour-3, minute, second);
       putch('  ');
       print_date(day, month, year);

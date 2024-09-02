@@ -52,19 +52,26 @@ unsigned char kbdus[128] =
 void keyboard_handler(struct regs *r)
 {
     unsigned char scancode;
+    
 
     /* Read from the keyboard's data buffer */
     scancode = inportb(0x60);
 
     /* If the top bit of the byte we read from the keyboard is
     *  set, that means that a key has just been released */
-    if (scancode & 0x80)
-    {
+    if (scancode & 0x80) {
         /* You can use this one to see if the user released the
         *  shift, alt, or control keys... */
-    }
-    else
-    {
+    } else
+        if (kbdus[scancode] == '\b') {
+          int value_crs_x = get_csr_x();
+          if (value_crs_x != 0) {
+            decrement_csr_x();
+            putch(' ');
+            decrement_csr_x();
+          }
+        }
+    else {
         /* Here, a key was just pressed. Please note that if you
         *  hold a key down, you will get repeated key press
         *  interrupts. */

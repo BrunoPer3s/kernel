@@ -162,6 +162,14 @@ void puts(unsigned char *text) {
 
 }
 
+void decrement_csr_x() {
+    csr_x--;
+}
+
+int get_csr_x() {
+    return csr_x;
+}
+
 void print_decimal(unsigned int num) {
     if(num == 0) return;
     print_decimal(num/10);
@@ -192,6 +200,7 @@ void print_date(unsigned int day, unsigned int month, unsigned int year) {
     putch('/');
     print_decimal(year);
     csr_x = 0;
+    
 }
 
 void putch_at(unsigned char text, unsigned int px, unsigned int py) {

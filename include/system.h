@@ -27,6 +27,8 @@ extern void cls();
 extern void scroll(void);
 extern void putch(unsigned char c);
 extern void puts(unsigned char *str);
+extern void decrement_csr_x();
+extern int get_csr_x();
 extern void print_decimal(unsigned int num);
 extern void print_time(unsigned int hours, int minutes, int seconds);
 extern void print_date(unsigned int day, unsigned int month, unsigned int year);

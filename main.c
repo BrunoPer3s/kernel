@@ -76,6 +76,7 @@ void main()
 	irq_install();
     keyboard_install();
     showTime();
+    puts("Bem vindo ao Kernel!");
 
     __asm__ __volatile__ ("sti");
 
