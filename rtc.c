@@ -106,10 +106,15 @@ unsigned char read_rtc() {
             if(year < CURRENT_YEAR) year += 100;
       }
 
+      unsigned int cursor_user_x, cursor_user_y;
+      save_cursor_position(&cursor_user_x, &cursor_user_y);
+
       clear_area(65, 0, 10, 0);
       print_time(hour-3, minute, second);
       putch('  ');
       print_date(day, month, year);
+
+      restore_cursor_position(cursor_user_x, cursor_user_y);
 
       return hour;
 }

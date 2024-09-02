@@ -44,6 +44,9 @@ void move_csr(void)
     /* A equação para descobrir o índice de um pedaço
     *  linear da memória pode ser representada por:
     *  Índice = [(y * largura) + x] */
+    if(csr_x != 0) {
+
+    }
     temp = csr_y * 80 + csr_x;
 
     /* Este manda um comando para os índices 14 e 15 no
@@ -154,6 +157,9 @@ void puts(unsigned char *text) {
     for (int i = 0; i < strlen(text); i++) {
         putch(text[i]);
     }
+    
+    putch('\n');
+
 }
 
 void print_decimal(unsigned int num) {
@@ -201,6 +207,17 @@ void clear_area(unsigned int x_start, unsigned int y_start, unsigned int width, 
             putch_at(' ', x, y);
          }
     }
+}
+
+void save_cursor_position(int *x, int *y) {
+    *x = csr_x;
+    *y = csr_y;
+}
+
+void restore_cursor_position(int x, int y) {
+    csr_x = x;
+    csr_y = y;
+    move_csr();
 }
 
 /* Atribui o primeiro plano e o fundo que nós usaremos */

@@ -31,6 +31,8 @@ extern void print_decimal(unsigned int num);
 extern void print_time(unsigned int hours, int minutes, int seconds);
 extern void print_date(unsigned int day, unsigned int month, unsigned int year);
 extern void init_video();
+extern void save_cursor_position(int *x, int *y);
+extern void restore_cursor_position(int x, int y);
 extern void clear_area(unsigned int x_start, unsigned int y_start, unsigned int width, unsigned int height);
 extern void putch_at(unsigned char text, unsigned int px, unsigned int py);
 extern void print_at_position(unsigned int x, unsigned int y, unsigned char text);

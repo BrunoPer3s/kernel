@@ -76,20 +76,11 @@ void main()
 	irq_install();
     keyboard_install();
     showTime();
-    //timer_install();
-
-    
-   
-    //timer_install();
 
     __asm__ __volatile__ ("sti");
 
-
-    
-
-    //int i = 10 / 0;
-
-    //putch(i);
+    /* int i = 10 / 0;
+    putch(i); */
 
 
     /* ...and leave this loop in. There is an endless loop in
