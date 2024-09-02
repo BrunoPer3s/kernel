@@ -1,5 +1,7 @@
 #include <system.h>
 
+
+
 unsigned char *memcpy(unsigned char *dest, const unsigned char *src, int count)
 {
     /* Add code here to copy 'count' bytes of data from 'src' to
@@ -46,7 +48,7 @@ int strlen(const char *str)
 unsigned char inportb (unsigned short _port)
 {
     unsigned char rv;
-    __asm__ __volatile__ ("inb %1, %0" : "=a" (rv) : "dN" (_port));
+    __asm__ __volatile__ ("inb %w1, %b0" : "=a" (rv) : "Nd" (_port));
     return rv;
 }
 
@@ -56,8 +58,11 @@ unsigned char inportb (unsigned short _port)
 *  cannot be done in C */
 void outportb (unsigned short _port, unsigned char _data)
 {
-    __asm__ __volatile__ ("outb %1, %0" : : "dN" (_port), "a" (_data));
+    __asm__ __volatile__ ("outb %b0, %w1" : : "a" (_data), "Nd" (_port) );
 }
+
+
+
 
 /* This is a very simple main() function. All it does is sit in an
 *  infinite loop. This will be like our 'idle' loop */
@@ -68,12 +73,24 @@ void main()
     gdt_install();
     idt_install();
     isrs_install();
+	irq_install();
+    keyboard_install();
+    showTime();
+    //timer_install();
 
-    puts("Hello World!\n");
+    
+   
+    //timer_install();
 
-    int i = 10 / 0;
+    __asm__ __volatile__ ("sti");
 
-    putch(i);
+
+    
+
+    //int i = 10 / 0;
+
+    //putch(i);
+
 
     /* ...and leave this loop in. There is an endless loop in
     *  'start.asm' also, if you accidentally delete this next line */

@@ -3,6 +3,7 @@
 
 typedef int size_t;
 
+
 /* Este define qual pilha estamos olhando depois de um ISR estar rodando */
 
 struct regs
@@ -23,8 +24,12 @@ extern void outportb (unsigned short _port, unsigned char _data);
 
 /* CONSOLE.C */
 extern void cls();
+extern void scroll(void);
 extern void putch(unsigned char c);
 extern void puts(unsigned char *str);
+extern void print_decimal(unsigned int num);
+extern void print_time(unsigned int hours, int minutes, int seconds);
+extern void print_date(unsigned int day, unsigned int month, unsigned int year);
 extern void init_video();
 extern void settextcolor(unsigned char forecolor, unsigned char backcolor);
 
@@ -32,6 +37,7 @@ extern void settextcolor(unsigned char forecolor, unsigned char backcolor);
 
 extern void gdt_set_gate(int num, unsigned long base, unsigned long limit, unsigned char access, unsigned char gran);
 extern void gdt_install();
+extern void showTime();
 
 /* IDT.C */
 extern void idt_set_gate(unsigned char num, unsigned long base, unsigned short sel, unsigned char flags);
@@ -39,6 +45,22 @@ extern void idt_install();
 
 /* ISRS.C */
 extern void isrs_install();
+
+/* IRQ.C */
+extern void irq_install_handler(int irq, void (*handler)(struct regs *r));
+extern void irq_uninstall_handler(int irq);
+extern void irq_install();
+
+/* KEYBOARD.C */
+extern void keyboard_install();
+
+/* TIMER.C */
+extern void timer_wait(int ticks);
+extern void timer_install();
+
+/* RTC.C */
+extern unsigned char read_rtc();
+void printValues();
 
 
 

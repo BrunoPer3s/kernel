@@ -1,10 +1,14 @@
 #include <system.h>
 
+#define VIDEO_MEMORY 0xB8000
+
 /* Este define nosso ponteiro de texto, nossas cores de fundo e
 *  primeiro plano (atributos), e as coordenadas x e y */
 unsigned short *textmemptr;
-int attrib = 0x0F;
+int attrib = 0x07;
 int csr_x = 0, csr_y = 0;
+
+volatile int* video_memory = (int*) VIDEO_MEMORY;
 
 /* Rola a tela */
 void scroll(void)
@@ -76,10 +80,10 @@ void cls()
     move_csr();
 }
 
+
 /* Coloca um caractere único na tela */
 void putch(unsigned char c)
 {
-    unsigned short *where;
     unsigned att = attrib << 8;
 
     /* Trata um backspace, recuando o cursor um espaço */
@@ -113,8 +117,8 @@ void putch(unsigned char c)
     *  Índice = [(y * largura) + x] */
     else if(c >= ' ')
     {
-        where = textmemptr + (csr_y * 80 + csr_x);
-        *where = c | att;	/* Caractere E atributos: cor */
+        int where = (csr_y * 80 + csr_x);
+        video_memory[where] = c | att;	/* Caractere E atributos: cor */
         csr_x++;
     }
 
@@ -140,6 +144,34 @@ void puts(unsigned char *text)
     {
         putch(text[i]);
     }
+}
+
+void print_decimal(unsigned int num) {
+    if(num == 0) return;
+    print_decimal(num/10);
+    putch(num % 10 + '0');
+}
+
+void print_time(unsigned int hours, int minutes, int seconds) {
+    print_decimal(hours);
+    putch(':');
+    if(minutes<10) {
+        putch('0');
+    }
+    print_decimal(minutes);
+    putch(':');
+    if(seconds < 10) {
+        putch('0');
+    }
+    print_decimal(seconds);
+}
+
+void print_date(unsigned int day, unsigned int month, unsigned int year) {
+    print_decimal(day);
+    putch('/');
+    print_decimal(month);
+    putch('/');
+    print_decimal(year);
 }
 
 /* Atribui o primeiro plano e o fundo que nós usaremos */
